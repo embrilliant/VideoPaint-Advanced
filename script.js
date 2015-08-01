@@ -1,73 +1,31 @@
 $(function() {
 
-	var vids = [document.getElementById("vid"), document.getElementById("vid2"), document.getElementById("vid3")];
+	var vid = document.getElementById("vid"), //fish
+		vid2 = document.getElementById("vid2"), //bubble
+		vid3 = document.getElementById("bgVid"), //polar bear
 
-	var brushCanvases = [document.getElementById("canvas"), document.getElementById("canvas2")];
+		canvas = document.getElementById("canvas"),
+		cDraw = canvas.getContext("2d"),
 
-	var brushes = [brushCanvases[0].getContext("2d"), brushCanvases[1].getContext("2d")];
-
-	var mergeCanvases = [document.getElementById("merge"), document.getElementById("merge2")];
-
-	var merges = [mergeCanvases[0].getContext("2d"), mergeCanvases[1].getContext("2d")];
-
-	var outputCanvases = [document.getElementById("output"), document.getElementById("output2")];
-
-	var outputs = [outputCanvases[0].getContext("2d"), outputCanvases[1].getContext("2d")];
-		// baseCanvas = document.getElementById("canvas"),
-		// cDraw = baseCanvas.getContext("2d"),
-
-		canvasWidth = brushCanvases[0].width,
-		canvasHeight = brushCanvases[0].height, //get baseCanvas size
+		canvasWidth = canvas.width,
+		canvasHeight = canvas.height, //get baseCanvas size
 		
-		// canvas2 = document.getElementById("canvas2"),
-		// cDraw2 = canvas2.getContext("2d"),
+		canvas2 = document.getElementById("canvas2"),
+		cDraw2 = canvas2.getContext("2d"),
 
-		// merge = document.getElementById("merge"),
-		// cMerge = merge.getContext("2d"),
-		// merge2 = document.getElementById("merge2"),
-		// cMerge2 = merge2.getContext("2d"),
+		merge = document.getElementById("merge"),
+		cMerge = merge.getContext("2d"),
+		merge2 = document.getElementById("merge2"),
+		cMerge2 = merge2.getContext("2d"),
 		
-		// outputCanvas = document.getElementById("output"),
-		// cOutput = outputCanvas.getContext("2d"),
-		// outputCanvas2 = document.getElementById("output2"),
-		// cOutput2 = outputCanvas2.getContext("2d"),
+		outputCanvas = document.getElementById("output"),
+		cOutput = outputCanvas.getContext("2d"),
+		outputCanvas2 = document.getElementById("output2"),
+		cOutput2 = outputCanvas2.getContext("2d"),
 
 		initLayer = true,
 		timeOut;
 
-	function brush(event, brush) {
-		var $this = $(this);
-		$this.on({ 	// Attach multiple event handlers simultaneously using a plain object. (http://api.jquery.com/on/#on-events-selector-data)
-			mousemove: function(event) {
-				// get brush position
-				var xPos = event.pageX, // left                   
-					yPos = event.pageY;	// top
-
-				// get canvas position
-				var widthSpace = ($(window).width() - 640) / 2,
-					topSpace = $("#output").position().top;
-
-				var brushPosX = xPos - widthSpace,
-					brushPosY = yPos - topSpace;
-				// end of get brush position
-
-				brush.fillStyle = "rgba(0, 0, 0, 1)";
-				brush.beginPath();
-				brush.arc(brushPosX, brushPosY, 30, 0, 2 * Math.PI, false);
-				brush.fill();
-			},
-			mouseup: function() {
-				$this.off("mousemove");
-			}
-		});
-	};
-
-	for ( var i = 0; i < brushes.length; i++ ) {
-		brush(event, brushes[i]);
-	}
-
-	brush(event, brushes[1]);
-	
 	function brush(event) { 
 
 		var $this = $(this);
@@ -86,10 +44,10 @@ $(function() {
 					brushPosY = yPos - topSpace;
 				// end of get brush position
 
-				brushes[0].fillStyle = "rgba(0, 0, 0, 1)";
-				brushes[0].beginPath();
-				brushes[0].arc(brushPosX, brushPosY, 30, 0, 2 * Math.PI, false);
-				brushes[0].fill();
+				cDraw.fillStyle = "rgba(0, 0, 0, 1)";
+				cDraw.beginPath();
+				cDraw.arc(brushPosX, brushPosY, 30, 0, 2 * Math.PI, false);
+				cDraw.fill();
 			},
 			mouseup: function() {
 				$this.off("mousemove");
@@ -137,13 +95,10 @@ $(function() {
 
   	function manipulation() {
 
-  		// cMerge2.drawImage(vids[2], 0, 0, 640, 360);
-  		// cMerge2.drawImage(canvas2, 0, 0, 640, 360);
-  		for ( var vid in vids ) {
-  			cMerge.drawImage(vids[0], 0, 0, 640, 360);
-  		}
-		cMerge.drawImage(vids[0], 0, 0, 640, 360);
-		cMerge.drawImage(baseCanvas, 0, 0, 640, 360);
+  		cMerge2.drawImage(vid2, 0, 0, 640, 360);
+  		cMerge2.drawImage(canvas2, 0, 0, 640, 360);
+		cMerge.drawImage(vid, 0, 0, 640, 360);
+		cMerge.drawImage(canvas, 0, 0, 640, 360);
 
 		if (initLayer) {
 			
@@ -185,7 +140,7 @@ $(function() {
 
 	$(window).on("mousedown", function() {  
 		vid.play();
-		vid3.play();
+		vid2.play();
 		startToLoop();
 		if (initLayer) {
 			brush();
@@ -196,7 +151,7 @@ $(function() {
 	});
 
 	$("#switch").on("click", function() {
-		vid2.play();
+		vid3.play();
 		if (initLayer) {
 			initLayer = false;
 			$(this).text("Switch back");
@@ -207,6 +162,7 @@ $(function() {
 	});
 
 	vid.play();
+	vid2.play();
 	startToLoop();
 
 	vid.addEventListener("ended", function() {

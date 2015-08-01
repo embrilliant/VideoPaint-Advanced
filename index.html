@@ -15,28 +15,34 @@
 	
 	<div id="container">
 
-		<video id="bgVid" autoplay="autoplay">
+		<video id="bgVid">
 			<source src="pb.mp4" type="video/mp4">
 		</video>
 
-		<video id="vid" muted autoplay="autoplay" crossOrigin="anonymous">
-			<source src="fish.mp4" type="video/mp4">
-		</video>
-
-		<video id="vid2" muted autoplay="autoplay" crossOrigin="anonymous">
+		<video id="vid2" muted crossOrigin="anonymous">
 			<source src="l2.mp4" type="video/mp4">
 		</video>
 
-		<canvas id="brush" width="640" height="360">		
+		<video id="vid" muted crossOrigin="anonymous">
+			<source src="fish.mp4" type="video/mp4">
+		</video>
+		
+		<canvas id="canvas2" width="640" height="360">		
 		</canvas>
 
-		<canvas id="brush2" width="640" height="360">		
-		</canvas>
-		
-		<canvas id="output" width="640" height="360">
+		<canvas id="merge2" width="640" height="360">		
 		</canvas>
 
 		<canvas id="output2" width="640" height="360">
+		</canvas>
+
+		<canvas id="canvas" width="640" height="360">		
+		</canvas>
+
+		<canvas id="merge" width="640" height="360">		
+		</canvas>
+		
+		<canvas id="output" width="640" height="360">
 		</canvas>
 
 	</div>
@@ -47,6 +53,6 @@
 		Please draw on the video :)
 	</p>
 
-<script type="text/javascript" src="script2.js"></script>
+<script type="text/javascript" src="script.js"></script>
 </body>
 </html>

@@ -34,26 +34,25 @@ video {
 	display: block;
 }
 
+img {
+	display: none;
+}
+
 canvas {
 	position: absolute;
 	z-index: 1;
 }
 
-#brush, #brush2 {
+#canvas, #merge, #canvas2 {
 	display: none;
 }
 
 p {
 	width: 600px;
 	margin: 0 auto;
-	margin-top: 30px;
+	margin-top: 40px;
 	font-family: "Comic Sans MS";
 	font-size: 1.2em;
 	color: #452b1b;
 	text-align: center; 
-}
-
-button {
-	font-size: 0.8em;
-	visibility: hidden;
 }
