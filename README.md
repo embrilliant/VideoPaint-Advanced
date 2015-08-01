@@ -11,4 +11,4 @@ Made with html5 canvas.
 
 ## Online Page
 
-[View this demo online](http://digitaleverything.net/demos/brush/2/)
+[View this demo online](http://embrilliant.github.io/VideoPaint-Advanced/)
