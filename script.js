@@ -91,7 +91,10 @@ $(function() {
 		} else {
 			
 			$("#merge2").css({"display":"none"});
-			manipulation(merges[1], outputs[1]);	
+
+			for (var i = 0; i < 2; i++ ) {
+				manipulation(merges[i], outputs[i]);
+			}
 		}
 	}
 
