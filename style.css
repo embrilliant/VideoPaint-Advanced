@@ -43,7 +43,7 @@ canvas {
 	z-index: 1;
 }
 
-#canvas, #merge, #canvas2 {
+#canvas, #merge, #canvas2, #merge2 {
 	display: none;
 }
 

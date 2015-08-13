@@ -1,34 +1,43 @@
 $(function() {
 
 		//Elements
-	var vids = [document.getElementById("vid"), //fish
-				document.getElementById("vid2"), //bubble
-				document.getElementById("bgVid")], //polar bear
-
-		canvases = [document.getElementById("canvas"), 
-					document.getElementById("canvas2")],
-
-		mergeCanvases = [document.getElementById("merge"), 
-						document.getElementById("merge2")],
-
-		outputCanvases = [document.getElementById("output"),
-						document.getElementById("output2")],
-		
-		//Canvas renders
-		canvasDraws = [canvases[0].getContext("2d"), 
-						canvases[1].getContext("2d")], 
-
-		canvasWidth = canvases[0].width,
-		canvasHeight = canvases[0].height, //get baseCanvas size
-
-		merges = [mergeCanvases[0].getContext("2d"), 
-					mergeCanvases[1].getContext("2d")],
-
-		outputs = [outputCanvases[0].getContext("2d"),
-					outputCanvases[1].getContext("2d")],
+	var bgVid = document.getElementById("bgVid"),
 
 		initLayer = true,
-		timeOut;
+		timeOut,
+
+		layers = [
+					{
+						vid: document.getElementById("vid"), //fish
+						canvas: document.getElementById("canvas"),
+						mergeCanvas: document.getElementById("merge"),
+						outputCanvas: document.getElementById("output")
+					}, 
+
+					{
+						vid: document.getElementById("vid2"),
+						canvas: document.getElementById("canvas2"),
+						mergeCanvas: document.getElementById("merge2"),
+						outputCanvas: document.getElementById("output2")
+					}
+
+				],
+		layersRender = [
+							{
+								canvasDraw: layers[0].canvas.getContext("2d"),
+								merge: layers[0].mergeCanvas.getContext("2d"),
+								output: layers[0].outputCanvas.getContext("2d")
+							},
+							{
+								canvasDraw: layers[1].canvas.getContext("2d"),
+								merge: layers[1].mergeCanvas.getContext("2d"),
+								output: layers[1].outputCanvas.getContext("2d")
+							}
+
+						],
+		canvasWidth = layers[0].canvas.width,
+		canvasHeight = layers[0].canvas.height; //get baseCanvas size
+
 
 	function brush(draw) { 
 
@@ -41,8 +50,8 @@ $(function() {
 					yPos = event.pageY;	// top
 
 				// get canvas position
-				var leftSpace = $(outputCanvases[0]).position().left,
-					topSpace = $(outputCanvases[0]).position().top;
+				var leftSpace = $(layers[0].outputCanvas).position().left,
+					topSpace = $(layers[0].outputCanvas).position().top;
 
 				var brushPosX = xPos - leftSpace,
 					brushPosY = yPos - topSpace;
@@ -61,9 +70,9 @@ $(function() {
 
   	function manipulation(merge, output) {
 
-  		for ( var i = 0; i < merges.length; i++ ) {
-  			merges[i].drawImage(vids[i], 0, 0, 640, 360);
-  			merges[i].drawImage(canvases[i], 0, 0, 640, 360);
+  		for ( var i = 0; i < layersRender.length; i++ ) {
+  			layersRender[i].merge.drawImage(layers[i].vid, 0, 0, 640, 360);
+  			layersRender[i].merge.drawImage(layers[i].canvas, 0, 0, 640, 360);
   		}
 
   		var image = merge.getImageData(0, 0, canvasWidth, canvasHeight),
@@ -82,29 +91,15 @@ $(function() {
 		output.putImageData(image, 0, 0, 0, 0, canvasWidth, canvasHeight);
   	}
 
-  	function whichLayer() {
-
-		if (initLayer) {
-
-			manipulation(merges[0], outputs[0]);
-
-		} else {
-			
-			$("#merge2").css({"display":"none"});
-
-			for (var i = 0; i < 2; i++ ) {
-				manipulation(merges[i], outputs[i]);
-			}
-		}
-	}
-
 	function startToLoop() {
 	    
-	    if (vid.paused || vid.ended) {
-	    	return;
-	    }
+	    // if (layers[0].vid.paused || layers[0].vid.ended) {
+	    // 	return;
+	    // }
 
-    	whichLayer();
+    	for (var i = 0; i < 2; i++ ) {
+			manipulation(layersRender[i].merge, layersRender[i].output);
+		}
 
     	if (requestAnimationFrame) { // "requestAnimationFrame"
         	requestAnimationFrame(startToLoop);
@@ -115,19 +110,19 @@ $(function() {
   	}
 
 	$(window).on("mousedown", function() {  
-		vids[0].play();
-		vids[1].play();
+		layers[0].vid.play();
+		layers[1].vid.play();
 		startToLoop();
 		if (initLayer) {
-			brush(canvasDraws[0])
+			brush(layersRender[0].canvasDraw)
 		} else {
-			brush(canvasDraws[1])
+			brush(layersRender[1].canvasDraw)
 		}
 		$("button").css({"visibility":"visible"});
 	});
 
 	$("#switch").on("click", function() {
-		vids[2].play();
+		bgVid.play();
 		if (initLayer) {
 			initLayer = false;
 			$(this).text("Switch back");
@@ -137,11 +132,11 @@ $(function() {
 		}
 	});
 
-	vids[0].play();
-	vids[1].play();
+	layers[0].vid.play();
+	layers[1].vid.play();
 	startToLoop();
 
-	vid.addEventListener("ended", function() {
+	layers[0].vid.addEventListener("ended", function() {
 		clearTimeout(timeOut);
 	});
 
