@@ -1,10 +1,11 @@
 $(function() {
 
 		//Elements
-	var bgVid = document.getElementById("bgVid"),
+	var bgVid = document.getElementById("bgVid"), //polar bear
 
-		initLayer = true,
+		initLayer = 0,
 		timeOut,
+		layerNumber = 0,
 
 		layers = [
 					{
@@ -15,7 +16,7 @@ $(function() {
 					}, 
 
 					{
-						vid: document.getElementById("vid2"),
+						vid: document.getElementById("vid2"), //bubble
 						canvas: document.getElementById("canvas2"),
 						mergeCanvas: document.getElementById("merge2"),
 						outputCanvas: document.getElementById("output2")
@@ -39,7 +40,7 @@ $(function() {
 		canvasHeight = layers[0].canvas.height; //get baseCanvas size
 
 
-	function brush(draw) { 
+	function brush(layerNumber) { 
 
 		var $this = $(this);
 		
@@ -57,10 +58,10 @@ $(function() {
 					brushPosY = yPos - topSpace;
 				// end of get brush position
 
-				draw.fillStyle = "rgba(0, 0, 0, 1)";
-				draw.beginPath();
-				draw.arc(brushPosX, brushPosY, 30, 0, 2 * Math.PI, false);
-				draw.fill();
+				layersRender[ layerNumber ].canvasDraw.fillStyle = "rgba(0, 0, 0, 1)";
+				layersRender[ layerNumber ].canvasDraw.beginPath();
+				layersRender[ layerNumber ].canvasDraw.arc(brushPosX, brushPosY, 30, 0, 2 * Math.PI, false);
+				layersRender[ layerNumber ].canvasDraw.fill();
 			},
 			mouseup: function() {
 				$this.off("mousemove");
@@ -93,9 +94,9 @@ $(function() {
 
 	function startToLoop() {
 	    
-	    // if (layers[0].vid.paused || layers[0].vid.ended) {
-	    // 	return;
-	    // }
+	    if (layers[0].vid.paused || layers[0].vid.ended) {
+	    	return;
+	    }
 
     	for (var i = 0; i < 2; i++ ) {
 			manipulation(layersRender[i].merge, layersRender[i].output);
@@ -113,21 +114,19 @@ $(function() {
 		layers[0].vid.play();
 		layers[1].vid.play();
 		startToLoop();
-		if (initLayer) {
-			brush(layersRender[0].canvasDraw)
-		} else {
-			brush(layersRender[1].canvasDraw)
-		}
+
+		brush( layerNumber );
+
 		$("button").css({"visibility":"visible"});
 	});
 
 	$("#switch").on("click", function() {
 		bgVid.play();
-		if (initLayer) {
-			initLayer = false;
+		if (layerNumber === 0) {
+			layerNumber = 1;
 			$(this).text("Switch back");
 		} else {
-			initLayer = true;
+			layerNumber = 0;
 			$(this).text("Switch to third video");
 		}
 	});
