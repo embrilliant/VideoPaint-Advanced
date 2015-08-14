@@ -11,7 +11,7 @@
 
 	var outputCanvases = [document.getElementById("output").getContext("2d"), document.getElementById("output2").getContext("2d")];
 
-	function applyBrushToVid(vid, brush, output, brushEl, outputEl) {
+	function applyBrushToVid(vid, brush, output, brushEl, outputEl) { //applyBrushToVid
 		output.drawImage(vid, 0, 0, outputEl.width, outputEl.height);
 		var imageBrush = brush.getImageData(0, 0, brushEl.width, brushEl.height),
 			imageOutput = output.getImageData(0, 0, outputEl.width, outputEl.height);
